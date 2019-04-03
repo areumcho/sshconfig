@@ -5,7 +5,6 @@ import sys
 import re
 
 
-
 #check commands file
 #prompt user for input - COMMANDS FILE
 cmd_file =input("\n# Enter commands file path and name (e.g. D:\MyApps\myfile.txt): ")
@@ -71,6 +70,47 @@ def ssh_connection(ip):
         time.sleep(1)
 
         #open user selected file for reading
+        selected_cmd_file = open(cmd_file, 'r')
+
+        #read from the beginning
+        selected_cmd_file.seek(0)
+
+        #write each line in the file to the device
+        for each_line in selected_cmd_file.readline():
+            connection.send(each_line + '\n')
+            time.sleep(2)
+
+        #close the user file
+        selected_user_file.close()
+
+        #close the command file
+        selected_cmd_file.close()
+
+        #recieve 65535 bytes of data/output returned by the device to check IOS syntax error
+        router_output = connection.recv(65535)
+
+        #the b represents an instance of the bytes type, because the network device does not return plain text (type string) when querying it via SSH.
+        if re.search(b"% Invalid input", router_output):
+            print("* There was at least one IOS syntax error on device {}".format(ip))
+        else:
+            print("\nDONE for device {}".format(ip))
+
+        #test for reading command output
+        print(str(router_output) + "\n")
+
+
+        #close the connection(session)
+        session.close()
+
+    except paramiko.AuthenticationException:
+        print("* Invalid username or password \n*Please check the username/passwd")
+        print("* closing the session...Bye!")
+
+
+
+
+
+
 
 
 
