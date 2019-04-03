@@ -20,19 +20,13 @@ def ip_addr_valid(list):
         #['10.10.10.2\n', '10.10.10.3\n', '10.10.10.4\n']
         octet_list = ip.split(".")
 
-        # it it meets the conditions below then if should operate the code insde.
+        # it it meets the conditions below then if should operate the code inside.
         
         if (len(octet_list) == 4) and (1<= int(octet_list[0] <=223) and (int(octet_list[0]) !=127) and (int(octet_list[0]) != 169) or int(octet_list[1]) !=254 and (0 <=int(octet_list[1]) <= 255) and 0<= int(octet_list[2]) <= 255 and 0 <=int(octet_list[3]) <=255):
             continue
         else:
             print()
             sys.exit()
-
-
-
-
-
-
 
 
 
